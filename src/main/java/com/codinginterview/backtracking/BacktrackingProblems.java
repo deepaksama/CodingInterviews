@@ -64,11 +64,6 @@ public class BacktrackingProblems {
 	 * Definition : The word can be constructed from letters of sequentially adjacent cells, where "adjacent" 
 	 * 				cells are horizontally or vertically neighboring. The same letter cell may not be used more than once.
 	 * 				wordSearch(board, row, col, currentWord, word, visited) Given an m x n board and a word, find if the word exists in the grid.
-	 * Recurrence Relation : findMazePaths(maze, row, col, path, visited, solutions) 	= 
-	 * 							findMazePaths(maze, row - 1, col, path, visited, solutions) , 
-	 * 							findMazePaths(maze, row + 1, col, path, visited, solutions) ,
-	 * 							findMazePaths(maze, row, col - 1, path, visited, solutions) ,
-	 * 							findMazePaths(maze, row, col + 1, path, visited, solutions)
 	 * Base Case: Boundaries hit, already visited, or found valid word
 	 * Source : LeetCode : #79 - Word Search 					
 	 * @formatter:on
@@ -179,5 +174,66 @@ public class BacktrackingProblems {
 			}
 		}
 		return nums;
+	}
+
+	/*
+	 * Problem 4: Given an array of integers, generate all the permutations of the
+	 * array
+	 */
+	public void permutations(Integer[] input, List<Integer> partial, boolean[] used, List<List<Integer>> solution) {
+		if (null == solution) {
+			solution = new ArrayList<>();
+		}
+		/*
+		 * Check if partial solution is valid
+		 */
+		if (partial.size() == input.length) {
+			solution.add(new ArrayList<>(partial));
+			return;
+		}
+
+		/*
+		 * Generate all possible candidates
+		 */
+		for (int i = 0; i < input.length; i++) {
+			if (!used[i]) {
+				used[i] = true;
+				partial.add(input[i]);
+				permutations(input, partial, used, solution);
+				used[i] = false;
+				partial.remove(partial.size() - 1);
+			}
+		}
+	}
+
+	public List<List<Integer>> permutations(Integer[] input) {
+		boolean[] used = new boolean[input.length];
+		List<List<Integer>> solution = new ArrayList<>();
+		permutations(input, new ArrayList<>(), used, solution);
+		return solution;
+	}
+
+	/*
+	 * Problem 5: Choose K integers from given array.
+	 */
+	public void chooseKCombinations(Integer[] input, int k, List<Integer> partial, int start,
+			List<List<Integer>> solution) {
+
+		if (partial.size() == k) {
+			solution.add(new ArrayList<>(partial));
+			return;
+		}
+
+		for (int i = start; i < input.length; i++) {
+			partial.add(input[i]);
+			chooseKCombinations(input, k, partial, i + 1, solution);
+			partial.remove(partial.size() - 1);
+		}
+	}
+
+	public List<List<Integer>> chooseKCombinations(Integer[] input, int k) {
+		List<List<Integer>> solution = new ArrayList<>();
+		chooseKCombinations(input, k, new ArrayList<>(), 0, solution);
+		return solution;
 	}
 }

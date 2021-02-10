@@ -135,4 +135,48 @@ class BacktrackingProblemsTest {
 		System.out.println("]");
 		expected.stream().forEach(l -> assertTrue(actualList.contains(l)));
 	}
+
+	// Problem 4
+	private static Stream<Arguments> provideArrayForPermutations() {
+		return Stream.of(
+		// @formatter:off
+			Arguments.of(
+				new Integer[] {1,2,3},
+				List.of(List.of(1,2,3),List.of(1,3,2),
+						List.of(2,1,3),List.of(2,3,1),
+						List.of(3,1,2),List.of(3,2,1))
+				)
+			);
+		//@formatter:on
+	}
+
+	@ParameterizedTest
+	@MethodSource("provideArrayForPermutations")
+	void test_permutations(Integer[] input, List<List<Integer>> expected) {
+		List<List<Integer>> actualList = solutions.permutations(input);
+		expected.stream().forEach(l -> assertTrue(actualList.contains(l)));
+		System.out.println(actualList);
+	}
+
+	// Problem 5
+	private static Stream<Arguments> provideArrayForKCombinations() {
+		return Stream.of(
+		// @formatter:off
+				Arguments.of(
+					new Integer[] {1,2,3,4},
+					3,
+					List.of(List.of(1,2,3),List.of(1,2,4),
+							List.of(1,3,4),List.of(2,3,4))
+					)
+				);
+			//@formatter:on
+	}
+
+	@ParameterizedTest
+	@MethodSource("provideArrayForKCombinations")
+	void test_KCombinations(Integer[] input, int k, List<List<Integer>> expected) {
+		List<List<Integer>> actualList = solutions.chooseKCombinations(input, k);
+		expected.stream().forEach(l -> assertTrue(actualList.contains(l)));
+		System.out.println(actualList);
+	}
 }
